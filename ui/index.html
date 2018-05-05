@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css">
+  <link rel="stylesheet" href="../node_modules/weather-underground-icons/dist/wu-icons-style.css">
+  <style>
+    html { background: #192033; color: #ffffff; }
+    .hero.is-primary { background: hsl(224, 34%, 15%); color: #ffffff; }
+    .title strong { color: #ffffff; }
+    .is-size-mega { font-size: 10rem; }
+    .has-text-weight-lighter { font-weight: lighter; }
+    .content p:not(:last-child) { margin-bottom: 0; }
+    .section:first-child { padding-top: 1rem; }
+
+    #Weather .media-left { margin-right: 0; }
+    #Weather .media { margin-left: 1rem; }
+    #Weather .media .content p:nth-child(2) { color: #a2adca }
+    #Weather > .container:last-child {
+      margin-top: 1.5rem;
+      border-top: 1px solid #42495d;
+      padding-top: 1.5rem;
+    }
+
+    .wu-96 { width: 96px; height: 96px; }
+  </style>
+</head>
+<body class="has-text-white">
+  <div id="app"></div>
+
+  <script id="tmplHome" type="text/html">
+    <section id="InputForm" class="hero is-primary is-medium">
+      <div class="hero-head">&nbsp;</div>
+      <div class="hero-body">
+        <div class="container">
+
+          <h1 class="title">Electron Weather</h1>
+
+          <div class="field has-addons">
+            <div class="control">
+              <input id="location" class="input is-large" size="40" type="text" placeholder="Location" />
+            </div>
+            <div class="control">
+              <a id="search" class="button is-info is-large">Go</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="hero-foot has-text-right">
+        <img src="./img/wunderground.png" style="height:32px; margin:12px;" alt="Data provided by Weather Underground" />
+      </div>
+    </section>
+  </script>
+
+  <script id="tmplWeather" type="text/html">
+    <section id="Weather" class="section is-primary">
+      <nav class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <p class="title is-5">
+              <strong>Electron Weather - <%- currentConditions.display_location.full %></strong>
+            </p>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="field has-addons">
+              <div class="control">
+                <input id="location" class="input" size="30" type="text" placeholder="Location" />
+              </div>
+              <div class="control">
+                <a id="search" class="button is-info">Go</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="containter">
+        <div class="level">
+          <div class="level-item has-text-centered">
+            <article class="media">
+              <figure class="media-left">
+                <p class="image is-256x256">
+                  <i class="wu wu-white wu-256 wu-<%- currentConditions.icon %>"></i>
+                </p>
+              </figure>
+              <div class="media-content">
+                <div class="content">
+                  <p class="is-size-mega has-text-weight-lighter"><%- currentConditions.temp_f.toFixed(0) %>&deg;</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="container has-text-centered">
+        <div class="level">
+          <div class="level-item">
+            <div class="content">
+              <p class="is-size-1"><%- currentConditions.relative_humidity %></p>
+              <p class="is-uppercase">Humidity</p>
+            </div>
+          </div>
+          <div class="level-item">
+            <div class="content">
+              <p class="is-size-1"><%- currentConditions.wind_mph %></p>
+              <p class="is-uppercase">Wind (mph)</p>
+            </div>
+          </div>
+          <div class="level-item">
+            <div class="content">
+              <p class="is-size-1"><%- currentConditions.precip_today_in %>"</p>
+              <p class="is-uppercase">Precipitation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="columns is-gapless has-text-white has-text-centered">
+          <% for (let i = 0; i < 5; i++) { %>
+            <% const day = forecast[i] %>
+            <div class="column">
+              <article class="media">
+                <figure class="media-left">
+                  <p class="image is-96x96">
+                    <i class="wu wu-white wu-96 wu-<%- day.icon %>"></i>
+                  </p>
+                </figure>
+                <div class="media-content">
+                  <div class="content">
+                    <p class="is-size-3"><%- day.high.fahrenheit %>&deg;</p>
+                    <p class="is-size-3"><%- day.low.fahrenheit %>&deg;</p>
+                  </div>
+                </div>
+              </article>
+              <p class="is-uppercase">
+                <% if (day.date.day === new Date().getDate()) { %>
+                  Today
+                <% } else if (day.date.day === new Date(Date.now()+864e5).getDate()) { %>
+                Tomorrow
+                <% } else { %>
+                  <%- day.date.weekday %>
+                <% } %>
+              </p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </section>
+  </script>
+
+  <script>
+    const app = require('./app.js')
+    app.start()
+  </script>
+
+</body>
+</html>
