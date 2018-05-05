@@ -6,7 +6,7 @@ class Wunderground {
   }
 
   url (path) {
-    return `http://api.wunderground.com/api/${this.key}/${path}.json`
+    return `https://api.wunderground.com/api/${this.key}/${path}.json`
   }
 
   async currentConditions (search = 'autoip') {
