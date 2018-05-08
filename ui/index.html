@@ -31,7 +31,11 @@
 
   <script id="tmplHome" type="text/html">
     <section id="InputForm" class="hero is-primary is-medium">
-      <div class="hero-head">&nbsp;</div>
+      <div class="hero-head">
+        <div class="has-text-right">
+          <img src="./img/wunderground.png" style="height:32px; margin:12px;" alt="Data provided by Weather Underground" />
+        </div>
+      </div>
       <div class="hero-body">
         <div class="container">
 
@@ -48,9 +52,7 @@
 
         </div>
       </div>
-      <div class="hero-foot has-text-right">
-        <img src="./img/wunderground.png" style="height:32px; margin:12px;" alt="Data provided by Weather Underground" />
-      </div>
+      <div class="hero-foot has-text-right">&nbsp;</div>
     </section>
   </script>
 
@@ -84,7 +86,9 @@
             <article class="media">
               <figure class="media-left">
                 <p class="image is-256x256">
-                  <i class="wu wu-white wu-256 wu-<%- currentConditions.icon %>"></i>
+                  <i class="wu wu-white wu-256
+                    wu-<%- currentConditions.icon || 'unknown' %>
+                    <% if (currentConditions.is_night) { %>wu-night<% } %>"></i>
                 </p>
               </figure>
               <div class="media-content">
@@ -138,15 +142,7 @@
                   </div>
                 </div>
               </article>
-              <p class="is-uppercase">
-                <% if (day.date.day === new Date().getDate()) { %>
-                  Today
-                <% } else if (day.date.day === new Date(Date.now()+864e5).getDate()) { %>
-                Tomorrow
-                <% } else { %>
-                  <%- day.date.weekday %>
-                <% } %>
-              </p>
+              <p class="is-uppercase"><%- day.date.weekday %></p>
             </div>
           <% } %>
         </div>

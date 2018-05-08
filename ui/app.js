@@ -39,6 +39,16 @@ module.exports = {
 async function getWeather (location) {
   const currentConditions = await ipc('getConditions', location)
   const forecast = await ipc('getForecast', location)
+
+  currentConditions.is_night = currentConditions.icon_url.includes('/nt_')
+  forecast.each(d => {
+    if (d.date.day === new Date().getDate()) {
+      d.weekday = 'Today'
+    } else if (d.date.day === new Date(Date.now() + 864e5).getDate()) {
+      d.weekday = 'Tomorrow'
+    }
+  })
+
   return {
     forecast,
     currentConditions
