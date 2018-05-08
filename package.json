@@ -22,7 +22,7 @@
   "dependencies": {
     "bulma": "^0.7.1",
     "lodash": "^4.17.10",
-    "weather-underground-icons": "^1.0.0"
+    "weather-underground-icons": "github:manifestinteractive/weather-underground-icons"
   },
   "devDependencies": {
     "electron": "^2.0.0",
