@@ -43,9 +43,9 @@ async function getWeather (location) {
   currentConditions.is_night = currentConditions.icon_url.includes('/nt_')
   forecast.forEach(d => {
     if (d.date.day === new Date().getDate()) {
-      d.weekday = 'Today'
+      d.date.weekday = 'Today'
     } else if (d.date.day === new Date(Date.now() + 864e5).getDate()) {
-      d.weekday = 'Tomorrow'
+      d.date.weekday = 'Tomorrow'
     }
   })
 
