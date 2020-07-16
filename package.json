@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "bulma": "^0.7.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "weather-underground-icons": "github:manifestinteractive/weather-underground-icons"
   },
   "devDependencies": {
